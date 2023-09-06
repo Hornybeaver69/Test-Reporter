@@ -7,4 +7,41 @@ components:
   properties: {col_widths: '{}'}
   name: column_panel_1
   layout_properties: {slot: default}
-  components: []
+  components:
+  - type: DataGrid
+    properties:
+      role: null
+      columns:
+      - {id: JIFJYQ, title: Test-case, data_key: test_case, $$hashKey: 'object:4028'}
+      - {id: WCERTA, title: Status(Passed), data_key: status, $$hashKey: 'object:4029'}
+      - {id: OTTKFH, title: Error-type, data_key: error_type, $$hashKey: 'object:4030'}
+      auto_header: true
+      tooltip: ''
+      border: ''
+      foreground: ''
+      rows_per_page: 20
+      visible: true
+      wrap_on: never
+      show_page_controls: true
+      spacing_above: large
+      spacing_below: small
+      background: ''
+    name: data_grid_1
+    layout_properties: {grid_position: 'PWNKRM,AFPGNW'}
+    components:
+    - type: RepeatingPanel
+      properties: {role: null, tooltip: '', border: '', foreground: '', items: null,
+        visible: true, spacing_above: none, spacing_below: none, item_template: Form1.RowTemplate1,
+        background: ''}
+      name: repeating_panel_1
+      layout_properties: {}
+      data_bindings: []
+    data_bindings: []
+- type: Image
+  properties: {height: 73}
+  name: logo_image
+  layout_properties: {slot: logo}
+- type: FileLoader
+  properties: {}
+  name: file_loader_1
+  layout_properties: {slot: left-nav}

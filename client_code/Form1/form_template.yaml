@@ -2,6 +2,7 @@ is_package: true
 container:
   type: HtmlTemplate
   properties: {html: '@theme:standard-page.html'}
+  data_bindings: []
 components:
 - type: ColumnPanel
   properties: {col_widths: '{}'}
@@ -36,6 +37,12 @@ components:
       name: repeating_panel_1
       layout_properties: {}
       data_bindings: []
+    data_bindings: []
+  - type: Plot
+    properties: {height: 450}
+    name: plot_1
+    layout_properties: {grid_position: 'OTWWGN,YWHOYJ'}
+    event_bindings: {click: plot_1_click, show: plot_1_show, double_click: plot_1_double_click}
     data_bindings: []
 - type: Image
   properties: {height: 73}

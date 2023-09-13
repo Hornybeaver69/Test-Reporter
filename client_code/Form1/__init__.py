@@ -1,8 +1,12 @@
 from ._anvil_designer import Form1Template
 from anvil import *
+import plotly.graph_objects as go
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from collections import defaultdict
+from collections import OrderedDict
+
 import json
 
 class Form1(Form1Template):
@@ -23,7 +27,7 @@ class Form1(Form1Template):
     json_content = file.get_bytes().decode('utf-8')
 
     # Clear the existing data in 'Tabela1'
-    app_tables.tabela1.delete_all_rows()
+    #app_tables.tabela1.delete_all_rows()
 
     # JSON object example
     # {"test-case":"glupi test 6", "status":true, "error-type":null}
@@ -41,9 +45,10 @@ class Form1(Form1Template):
       
     # Insert new data from the JSON into 'Tabela1'
     for item in data:
+      #print(item.get("status"))
       app_tables.tabela1.add_row(
         test_case=item.get("test-case"),
-        status=item.get("status"),
+        status=(item.get("status") == "True"),
         error_type=item.get("error-type")
         )
 
@@ -51,4 +56,76 @@ class Form1(Form1Template):
     self.repeating_panel_1.items = app_tables.tabela1.search()
     self.repeating_panel_1.items = app_tables.tabela1.search()
     self.file_loader_1.clear()
+
+  def plot_1_click(self, points, **event_args):
+    """This method is called when a data point is clicked."""
+    rows =  []
+    for row in app_tables.tabela1.search():
+      print(row)
+    self.plot_1.data = [
+      go.Scatter(
+      x = [1, 2, 3],
+      y = [3, 1, 6],
+      marker = dict(
+        color= 'rgb(16, 32, 77)'
+      )
+    ),
+    go.Bar(
+      x = [1, 2, 3],
+      y = [3, 1, 6],
+      name = 'Bar Chart Example'
+    )
+    ]
+    pass
+
+  def plot_1_show(self, **event_args):
+    """This method is called when the Plot is shown on the screen"""
+    self.plot_1.data = [
+      go.Scatter(
+      x = [1, 2, 3],
+      y = [3, 1, 6],
+      marker = dict(
+        color= 'rgb(16, 32, 77)'
+      )
+    ),
+    go.Bar(
+      x = [1, 2, 3],
+      y = [3, 1, 6],
+      name = 'Bar Chart Example'
+    )
+    ]
+    for row in app_tables.tabela1.search():
+      print(row)
+    pass
+
+  def plot_1_double_click(self, **event_args):
+    """This method is called when the plot is double-clicked."""
+    num_fails = OrderedDict()
+    for row in app_tables.tabela1.search():
+      #print(f"{row['test_case']} is {row['status']} passed")
+      error_type = row["error_type"]
+      if (row["status"] == False):
+        if error_type in num_fails:
+          num_fails[error_type] += 1
+        else:
+          num_fails[error_type] = 1
+    for err,num in num_fails.items():
+      entry =       go.Scatter(
+        x = [err],
+        y = [num],
+        marker = dict(
+          color= 'rgb(16, 32, 77)'
+       )
+      )
+      #go.Bar(
+      # x = [1, 2, 3],
+      # y = [3, 1, 6],
+      # name = 'Bar Chart Example'
+      #)
+      #]
+      self.plot_1.data.append(entry)
+    pass
+
+
+
 

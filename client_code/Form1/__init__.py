@@ -21,7 +21,6 @@ class Form1(Form1Template):
     # Set up event handler for file upload
     self.file_loader_1.set_event_handler('change', self.file_loaded)
 
-
   def file_loaded(self, file, **event_args):
     # Read the uploaded JSON file
     json_content = file.get_bytes().decode('utf-8')
@@ -56,50 +55,9 @@ class Form1(Form1Template):
     self.repeating_panel_1.items = app_tables.tabela1.search()
     self.repeating_panel_1.items = app_tables.tabela1.search()
     self.file_loader_1.clear()
+    self.refresh_plot()
 
-  def plot_1_click(self, points, **event_args):
-    """This method is called when a data point is clicked."""
-    rows =  []
-    for row in app_tables.tabela1.search():
-      print(row)
-    self.plot_1.data = [
-      go.Scatter(
-      x = [1, 2, 3],
-      y = [3, 1, 6],
-      marker = dict(
-        color= 'rgb(16, 32, 77)'
-      )
-    ),
-    go.Bar(
-      x = [1, 2, 3],
-      y = [3, 1, 6],
-      name = 'Bar Chart Example'
-    )
-    ]
-    pass
-
-  def plot_1_show(self, **event_args):
-    """This method is called when the Plot is shown on the screen"""
-    self.plot_1.data = [
-      go.Scatter(
-      x = [1, 2, 3],
-      y = [3, 1, 6],
-      marker = dict(
-        color= 'rgb(16, 32, 77)'
-      )
-    ),
-    go.Bar(
-      x = [1, 2, 3],
-      y = [3, 1, 6],
-      name = 'Bar Chart Example'
-    )
-    ]
-    for row in app_tables.tabela1.search():
-      print(row)
-    pass
-
-  def plot_1_double_click(self, **event_args):
-    """This method is called when the plot is double-clicked."""
+  def refresh_plot(self):
     num_fails = OrderedDict()
     for row in app_tables.tabela1.search():
       #print(f"{row['test_case']} is {row['status']} passed")
@@ -109,23 +67,34 @@ class Form1(Form1Template):
           num_fails[error_type] += 1
         else:
           num_fails[error_type] = 1
+    curx = []
+    cury = []
     for err,num in num_fails.items():
-      entry =       go.Scatter(
-        x = [err],
-        y = [num],
-        marker = dict(
-          color= 'rgb(16, 32, 77)'
-       )
-      )
+      curx.append(err)
+      cury.append(num)
       #go.Bar(
       # x = [1, 2, 3],
       # y = [3, 1, 6],
       # name = 'Bar Chart Example'
       #)
       #]
-      self.plot_1.data.append(entry)
+    print(curx)
+    print(cury)
+    self.plot_1.data = [
+      go.Scatter(
+      x = curx,
+      y = cury,
+      marker = dict(
+        color= 'rgb(16, 32, 77)'
+      )
+      ),
+      go.Bar(
+        x = curx,
+        y = cury,
+        name = 'Bar Chart Example'
+      )
+      ]
     pass
-
 
 
 
